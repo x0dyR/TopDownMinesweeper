@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 public class Health : IDamageable
 {
@@ -16,7 +15,9 @@ public class Health : IDamageable
         _currentHealth = currentHealth;
     }
 
-    public int HealthAmount => _currentHealth;
+    public int MaxHealth => _maxHealth;
+
+    public int CurrentHealth => _currentHealth;
 
     public void TakeDamage(int damage)
     {
@@ -27,7 +28,7 @@ public class Health : IDamageable
 
         TookDamage?.Invoke();
 
-        if(_currentHealth < 0)
+        if (_currentHealth <= 0)
         {
             _currentHealth = 0;
             Died?.Invoke();

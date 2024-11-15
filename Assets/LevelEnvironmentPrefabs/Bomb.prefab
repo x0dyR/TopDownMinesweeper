@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d40b13cf65abf3743b0e4e69a8178021, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _timeToDetonate: 2
+  _timeToDetonate: 1
   _damage: 10
   _explodeVFX: {fileID: 2312591318274358132, guid: 77da29788f3010e4396994ea52057980,
     type: 3}

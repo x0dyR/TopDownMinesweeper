@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class CharacterView : MonoBehaviour
 {
+    private const int BaseLayer = 0;
+    private const int InjuredLayer = 1;
+
     private readonly int _deathKey = Animator.StringToHash("Die");
     private readonly int _takeDamageKey = Animator.StringToHash("TakeDamage");
     private readonly int _isIdlingKey = Animator.StringToHash("IsIdling");
@@ -23,4 +26,8 @@ public class CharacterView : MonoBehaviour
     public void StartRunning() => _animator.SetBool(_isRunning, true);
 
     public void StopRunning() => _animator.SetBool(_isRunning, false);
+
+    public void ChangeLayerToBase() => _animator.SetLayerWeight(BaseLayer, 1.0f);
+
+    public void ChangeLayerToInjured() => _animator.SetLayerWeight(InjuredLayer, 1.0f);
 }

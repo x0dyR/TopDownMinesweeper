@@ -7,6 +7,8 @@ public class Character : MonoBehaviour, IDamageable
 {
     public event Action TookDamage;
 
+    private const float InjuredStateThreshold = .3f;
+
     [SerializeField] private NavMeshAgent _navAgent;
 
     [SerializeField] private float _speed;
@@ -18,6 +20,8 @@ public class Character : MonoBehaviour, IDamageable
     [SerializeField] private LayerMask _groundLayer;
 
     [SerializeField] private int _maxHealth;
+
+    [SerializeField] private int _currentHealth;
 
     private InputSystem _input;
 
@@ -50,7 +54,9 @@ public class Character : MonoBehaviour, IDamageable
         _health.TookDamage += OnTookDamage;
         _health.Died += OnDying;
 
-        _isAlive = _health.HealthAmount > 0 ? true : false;
+        _isAlive = _health.CurrentHealth > 0 ? true : false;
+
+        _currentHealth = _health.CurrentHealth;
 
         _view.Initialize();
     }
@@ -83,14 +89,14 @@ public class Character : MonoBehaviour, IDamageable
         {
             _inputDirection = transform.position;
             _pathGoalVisualizer.MoveTo(_inputDirection);
-            _mover.ProcessMove(_inputDirection);        
+            _mover.ProcessMove(_inputDirection);
         }
     }
 
-    private void OnTookDamage()
+    private void OnDisable()
     {
-        _view.TriggerTakeDamage();
-        TookDamage?.Invoke();
+        _health.TookDamage -= OnDying;
+        _health.TookDamage -= OnTookDamage;
     }
 
     private void OnDying()
@@ -99,10 +105,18 @@ public class Character : MonoBehaviour, IDamageable
         _isAlive = false;
         Debug.Log("Im dead ;(");
     }
-    private void OnDisable()
+
+    private void OnTookDamage()
     {
-        _health.TookDamage -= OnDying;
-        _health.TookDamage -= OnTookDamage;
+        _view.TriggerTakeDamage();
+        TookDamage?.Invoke();
+
+        _currentHealth = _health.CurrentHealth;
+
+        if ((_health.CurrentHealth / (float)_health.MaxHealth) < InjuredStateThreshold)
+            _view.ChangeLayerToInjured();
+        else
+            _view.ChangeLayerToBase();
     }
 
     public void TakeDamage(int damage)

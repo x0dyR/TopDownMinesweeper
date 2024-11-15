@@ -34,6 +34,11 @@ public class Bomb : MonoBehaviour
         }
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        _currentTime = 0;
+    }
+
     private void OnDrawGizmos()
         => Gizmos.DrawWireSphere(transform.position, _collider.bounds.extents.z);
 }
