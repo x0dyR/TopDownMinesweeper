@@ -4,7 +4,7 @@ public class Raycaster
 {
     private RaycastHit[] _hitedObjects = new RaycastHit[16];
 
-    Vector3 _lastPosition;
+    private Vector3 _lastPosition;
 
     public Vector3 RaycastToGround(Vector3 screenPoint, LayerMask raycastableLayer)
     {

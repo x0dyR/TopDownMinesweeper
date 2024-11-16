@@ -15,7 +15,7 @@ public class Character : MonoBehaviour, IDamageable
 
     [SerializeField] private CharacterView _view;
 
-    [SerializeField] private GameObject _pathGoalObject;
+    [SerializeField] private PathGoalObject _pathGoalObject;
 
     [SerializeField] private LayerMask _groundLayer;
 
@@ -54,7 +54,7 @@ public class Character : MonoBehaviour, IDamageable
         _health.TookDamage += OnTookDamage;
         _health.Died += OnDying;
 
-        _isAlive = _health.CurrentHealth > 0 ? true : false;
+        _isAlive = _health.CurrentHealth > 0;
 
         _currentHealth = _health.CurrentHealth;
 
@@ -96,9 +96,8 @@ public class Character : MonoBehaviour, IDamageable
     private void OnDisable()
     {
         _health.TookDamage -= OnDying;
-        _health.TookDamage -= OnTookDamage;
     }
-
+    
     private void OnDying()
     {
         _view.TriggerDeath();
@@ -106,21 +105,21 @@ public class Character : MonoBehaviour, IDamageable
         Debug.Log("Im dead ;(");
     }
 
+    public void TakeDamage(int damage)
+    {
+        _health.TakeDamage(damage);
+        _currentHealth = _health.CurrentHealth;
+    }
+
     private void OnTookDamage()
     {
-        _view.TriggerTakeDamage();
         TookDamage?.Invoke();
 
-        _currentHealth = _health.CurrentHealth;
-
+        _view.TriggerTakeDamage();
+        
         if ((_health.CurrentHealth / (float)_health.MaxHealth) < InjuredStateThreshold)
             _view.ChangeLayerToInjured();
         else
             _view.ChangeLayerToBase();
-    }
-
-    public void TakeDamage(int damage)
-    {
-        _health.TakeDamage(damage);
     }
 }

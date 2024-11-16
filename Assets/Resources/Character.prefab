@@ -1855,11 +1855,13 @@ MonoBehaviour:
   _navAgent: {fileID: 0}
   _speed: 5
   _view: {fileID: 1041924919936270732}
-  _pathGoalObject: {fileID: 6900704511881687559, guid: cf9be061d575df6418c98c2c5ebde13d,
+  _pathGoalObject: {fileID: -6039432776470956127, guid: adbd92bc84b2b21468df32ec0dd64585,
     type: 3}
   _groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  _maxHealth: 100
+  _currentHealth: 0
 --- !u!65 &2960239079242629158
 BoxCollider:
   m_ObjectHideFlags: 0

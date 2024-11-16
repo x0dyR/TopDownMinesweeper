@@ -28,7 +28,7 @@ public class Bomb : MonoBehaviour
                 damageable.TakeDamage(_damage);
 
                 _currentTime = 0;
-            Instantiate(_explodeVFX, transform.position, transform.rotation,null);
+                Instantiate(_explodeVFX, transform.position, transform.rotation, null);
                 Destroy(gameObject);
             }
         }
