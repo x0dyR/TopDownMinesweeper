@@ -51,8 +51,7 @@ public class Character : MonoBehaviour, IDamageable
 
         _health = new Health(_maxHealth, _maxHealth);
 
-        _health.TookDamage += OnTookDamage;
-        _health.Died += OnDying;
+        _health.Died += OnDied;
 
         _isAlive = _health.CurrentHealth > 0;
 
@@ -68,7 +67,7 @@ public class Character : MonoBehaviour, IDamageable
             if (_input.RightMousePressed())
             {
                 _inputDirection = _raycaster.RaycastToGround(_input.ReadMousePosition(), _groundLayer);
-                _pathGoalVisualizer.MoveTo(_inputDirection);
+                _pathGoalVisualizer.MoveTo(_mover.GoalPosition);
             }
 
             _mover.ProcessMove(_inputDirection);
@@ -95,10 +94,10 @@ public class Character : MonoBehaviour, IDamageable
 
     private void OnDisable()
     {
-        _health.TookDamage -= OnDying;
+        _health.Died -= OnDied;
     }
     
-    private void OnDying()
+    private void OnDied()
     {
         _view.TriggerDeath();
         _isAlive = false;
@@ -109,10 +108,7 @@ public class Character : MonoBehaviour, IDamageable
     {
         _health.TakeDamage(damage);
         _currentHealth = _health.CurrentHealth;
-    }
-
-    private void OnTookDamage()
-    {
+        
         TookDamage?.Invoke();
 
         _view.TriggerTakeDamage();

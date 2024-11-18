@@ -12,9 +12,14 @@ public class TransformMover : IMover
         _speed = speed;
     }
 
+    public Vector3 GoalPosition { get;private set; }
+
     public void ProcessMove(Vector3 direction)
     {
         if (direction.sqrMagnitude > Mathf.Epsilon * Mathf.Epsilon)
+        {
             _transform.position += _speed * Time.deltaTime * direction.normalized;
+            GoalPosition = _transform.position;
+        }
     }
 }

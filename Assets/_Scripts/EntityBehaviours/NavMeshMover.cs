@@ -10,6 +10,8 @@ public class NavMeshMover : IMover
         _navAgent = navAgent;
     }
 
+    public Vector3 GoalPosition { get; private set; }
+
     public void ProcessMove(Vector3 direction)
     {
         NavMeshPath path = new NavMeshPath();
@@ -17,7 +19,10 @@ public class NavMeshMover : IMover
         if (direction.sqrMagnitude > _navAgent.stoppingDistance * _navAgent.stoppingDistance)
         {
             if (IsPathExists(path, direction))
+            {
                 _navAgent.SetDestination(direction);
+                GoalPosition = _navAgent.destination;
+            }
         }
     }
 
