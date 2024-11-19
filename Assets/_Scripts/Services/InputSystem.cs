@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class InputSystem
 {
-    private const string GroundLayerName = "Ground";
-
     private const int LeftMouseButton = 0;
     private const int RightMouseButton = 1;
 
