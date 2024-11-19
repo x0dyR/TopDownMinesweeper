@@ -7,11 +7,9 @@ public class Character : MonoBehaviour, IDamageable
 {
     public event Action TookDamage;
 
-    private const float InjuredStateThreshold = .3f;
+    private const float InjuredStateHealthThreshold = .3f;
 
     [SerializeField] private NavMeshAgent _navAgent;
-
-    [SerializeField] private float _speed;
 
     [SerializeField] private CharacterView _view;
 
@@ -20,29 +18,24 @@ public class Character : MonoBehaviour, IDamageable
     [SerializeField] private LayerMask _groundLayer;
 
     [SerializeField] private int _maxHealth;
-
     [SerializeField] private int _currentHealth;
 
-    private InputSystem _input;
+    private Health _health;
+    private bool _isAlive;
 
+    private InputSystem _input;
     private Raycaster _raycaster;
 
     private IMover _mover;
-
     private Vector3 _inputDirection;
 
     private PathGoalPoint _pathGoalVisualizer;
-
-    private Health _health;
-
-    private bool _isAlive;
 
     private void Awake()
     {
         _navAgent = GetComponent<NavMeshAgent>();
 
         _input = new InputSystem();
-
         _raycaster = new Raycaster();
 
         _mover = new NavMeshMover(_navAgent);
@@ -96,24 +89,23 @@ public class Character : MonoBehaviour, IDamageable
     {
         _health.Died -= OnDied;
     }
-    
+
     private void OnDied()
     {
         _view.TriggerDeath();
         _isAlive = false;
-        Debug.Log("Im dead ;(");
     }
 
     public void TakeDamage(int damage)
     {
         _health.TakeDamage(damage);
         _currentHealth = _health.CurrentHealth;
-        
+
         TookDamage?.Invoke();
 
         _view.TriggerTakeDamage();
-        
-        if ((_health.CurrentHealth / (float)_health.MaxHealth) < InjuredStateThreshold)
+
+        if ((_health.CurrentHealth / (float)_health.MaxHealth) < InjuredStateHealthThreshold)
             _view.ChangeLayerToInjured();
         else
             _view.ChangeLayerToBase();

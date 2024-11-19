@@ -2,18 +2,26 @@ using UnityEngine;
 
 public class CharacterView : MonoBehaviour
 {
-    private const int BaseLayer = 0;
-    private const int InjuredLayer = 1;
-
     private readonly int _deathKey = Animator.StringToHash("Die");
     private readonly int _takeDamageKey = Animator.StringToHash("TakeDamage");
     private readonly int _isIdlingKey = Animator.StringToHash("IsIdling");
     private readonly int _isRunning = Animator.StringToHash("IsRunning");
 
+    private const string BaseLayerName = "Base Layer";
+    private const string InjuredLayerName = "Injured Layer";
+
     private Animator _animator;
 
+    private int _baseLayerIndex;
+    private int _injuredLayerIndex;
+
     public void Initialize()
-        => _animator = GetComponent<Animator>();
+    {
+        _animator = GetComponent<Animator>();
+
+        _baseLayerIndex = _animator.GetLayerIndex(BaseLayerName);
+        _injuredLayerIndex = _animator.GetLayerIndex(InjuredLayerName);
+    }
 
     public void TriggerDeath() => _animator.SetTrigger(_deathKey);
 
@@ -27,7 +35,7 @@ public class CharacterView : MonoBehaviour
 
     public void StopRunning() => _animator.SetBool(_isRunning, false);
 
-    public void ChangeLayerToBase() => _animator.SetLayerWeight(BaseLayer, 1.0f);
+    public void ChangeLayerToBase() => _animator.SetLayerWeight(_baseLayerIndex, 1.0f);
 
-    public void ChangeLayerToInjured() => _animator.SetLayerWeight(InjuredLayer, 1.0f);
+    public void ChangeLayerToInjured() => _animator.SetLayerWeight(_injuredLayerIndex, 1.0f);
 }
