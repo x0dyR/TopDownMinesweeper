@@ -10,11 +10,21 @@ public class Bomb : MonoBehaviour
 
     [SerializeField] private SphereCollider _collider;
 
+    [SerializeField] private AudioSource _audioSource;
+
+    [SerializeField] private AudioClip _enterSound;
+
     private float _currentTime;
 
     private void Awake()
     {
         _collider = GetComponent<SphereCollider>();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent(out IDamageable _))
+            _audioSource.PlayOneShot(_enterSound);
     }
 
     private void OnTriggerStay(Collider other)
