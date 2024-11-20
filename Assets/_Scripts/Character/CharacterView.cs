@@ -35,7 +35,7 @@ public class CharacterView : MonoBehaviour
 
     public void StopRunning() => _animator.SetBool(_isRunning, false);
 
-    public void ChangeLayerToBase() => _animator.SetLayerWeight(_baseLayerIndex, 1.0f);
+    public void EnableInjuredLayer() => _animator.SetLayerWeight(_injuredLayerIndex, 1.0f);
 
-    public void ChangeLayerToInjured() => _animator.SetLayerWeight(_injuredLayerIndex, 1.0f);
+    public void DisableInjuredLayer() => _animator.SetLayerWeight(_injuredLayerIndex, 0);
 }

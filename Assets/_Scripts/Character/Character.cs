@@ -95,13 +95,10 @@ public class Character : MonoBehaviour, IDamageable
         _view.TriggerTakeDamage();
 
         if ((_health.CurrentHealth / (float)_health.MaxHealth) < InjuredStateHealthThreshold)
-            _view.ChangeLayerToInjured();
+            _view.EnableInjuredLayer();
         else
-            _view.ChangeLayerToBase();
+            _view.DisableInjuredLayer();
     }
 
-    private void OnDied()
-    {
-        _view.TriggerDeath();
-    }
+    private void OnDied() => _view.TriggerDeath();
 }
