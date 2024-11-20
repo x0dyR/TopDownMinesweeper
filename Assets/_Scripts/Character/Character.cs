@@ -1,12 +1,9 @@
-using System;
 using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class Character : MonoBehaviour, IDamageable
 {
-    public event Action TookDamage;
-
     private const float InjuredStateHealthThreshold = .3f;
 
     [SerializeField] private NavMeshAgent _navAgent;
@@ -21,7 +18,6 @@ public class Character : MonoBehaviour, IDamageable
     [SerializeField] private int _currentHealth;
 
     private Health _health;
-    private bool _isAlive;
 
     private InputSystem _input;
     private Raycaster _raycaster;
@@ -44,9 +40,8 @@ public class Character : MonoBehaviour, IDamageable
 
         _health = new Health(_maxHealth, _maxHealth);
 
+        _health.TookDamage += OnTookDamage;
         _health.Died += OnDied;
-
-        _isAlive = _health.CurrentHealth > 0;
 
         _currentHealth = _health.CurrentHealth;
 
@@ -55,7 +50,7 @@ public class Character : MonoBehaviour, IDamageable
 
     private void Update()
     {
-        if (_isAlive)
+        if (_health.IsAlive)
         {
             if (_input.RightMousePressed())
             {
@@ -65,7 +60,7 @@ public class Character : MonoBehaviour, IDamageable
 
             _mover.ProcessMove(_inputDirection);
 
-            if (_navAgent.velocity.magnitude < _navAgent.stoppingDistance)
+            if (_navAgent.velocity.sqrMagnitude < _navAgent.stoppingDistance * _navAgent.stoppingDistance)
             {
                 _view.StopRunning();
                 _view.StartIdling();
@@ -77,7 +72,7 @@ public class Character : MonoBehaviour, IDamageable
             }
         }
 
-        if (_isAlive == false)
+        if (_health.IsAlive == false)
         {
             _inputDirection = transform.position;
             _pathGoalVisualizer.MoveTo(_inputDirection);
@@ -87,21 +82,15 @@ public class Character : MonoBehaviour, IDamageable
 
     private void OnDisable()
     {
+        _health.TookDamage -= OnTookDamage;
         _health.Died -= OnDied;
     }
 
-    private void OnDied()
-    {
-        _view.TriggerDeath();
-        _isAlive = false;
-    }
+    public void TakeDamage(int damage) => _health.TakeDamage(damage);
 
-    public void TakeDamage(int damage)
+    private void OnTookDamage()
     {
-        _health.TakeDamage(damage);
         _currentHealth = _health.CurrentHealth;
-
-        TookDamage?.Invoke();
 
         _view.TriggerTakeDamage();
 
@@ -109,5 +98,10 @@ public class Character : MonoBehaviour, IDamageable
             _view.ChangeLayerToInjured();
         else
             _view.ChangeLayerToBase();
+    }
+
+    private void OnDied()
+    {
+        _view.TriggerDeath();
     }
 }

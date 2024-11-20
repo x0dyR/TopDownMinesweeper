@@ -9,7 +9,7 @@ public class Health : IDamageable
     private int _maxHealth;
     private int _currentHealth;
 
-    public Health(int maxHealth, int currentHealth)
+    public Health(int maxHealth, int currentHealth) //When a new Health instance is created current health value will be set as the initial current health.
     {
         _maxHealth = maxHealth;
         _currentHealth = currentHealth;
@@ -18,6 +18,8 @@ public class Health : IDamageable
     public int MaxHealth => _maxHealth;
 
     public int CurrentHealth => _currentHealth;
+
+    public bool IsAlive => _currentHealth > 0;
 
     public void TakeDamage(int damage)
     {
