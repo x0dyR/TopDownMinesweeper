@@ -1,6 +1,6 @@
 using System;
 
-public class Health : IDamageable
+public class Health
 {
     public event Action TookDamage;
 
