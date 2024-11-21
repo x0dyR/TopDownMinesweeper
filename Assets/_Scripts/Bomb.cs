@@ -1,8 +1,11 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody), typeof(SphereCollider))]
 public class Bomb : MonoBehaviour
 {
+    [SerializeField] private GameObject _model;
+
     [SerializeField] private float _timeToDetonate;
     [SerializeField] private int _damage;
 
@@ -12,41 +15,52 @@ public class Bomb : MonoBehaviour
 
     [SerializeField] private AudioSource _audioSource;
 
-    [SerializeField] private AudioClip _enterSound;
+    [SerializeField] private AudioClip _startExplodeSound;
+    [SerializeField] private AudioClip _explodeSound;
 
-    private float _currentTime;
+    private Collider[] _overlapedColliders;
+
+    [field:SerializeField]private Coroutine _explodeCoroutine;
 
     private void Awake()
     {
         _collider = GetComponent<SphereCollider>();
+        _overlapedColliders = new Collider[32];
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out IDamageable _))
-            _audioSource.PlayOneShot(_enterSound);
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.TryGetComponent(out IDamageable damageable))
         {
-            _currentTime += Time.deltaTime;
+            _explodeCoroutine ??= StartCoroutine(ExplodeTimer(_timeToDetonate));
 
-            if (_currentTime > _timeToDetonate)
-            {
-                damageable.TakeDamage(_damage);
-
-                _currentTime = 0;
-                Instantiate(_explodeVFX, transform.position, transform.rotation, null);
-                Destroy(gameObject);
-            }
+            _audioSource.PlayOneShot(_startExplodeSound);
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        _currentTime = 0;
+        StopCoroutine(_explodeCoroutine);
+        _explodeCoroutine = null;//проверка юникода
+    }
+
+    private IEnumerator ExplodeTimer(float timeToDetonate)
+    {
+        yield return new WaitForSeconds(timeToDetonate);
+
+        int hitCount = Physics.OverlapSphereNonAlloc(transform.position, _collider.bounds.extents.z, _overlapedColliders);
+
+        for (int i = 0; i < hitCount; i++)
+            if (_overlapedColliders[i].TryGetComponent(out IDamageable damageable))
+                damageable.TakeDamage(_damage);
+
+        _audioSource.PlayOneShot(_explodeSound);
+
+        _model.SetActive(false);
+        _collider.enabled = false;
+
+        Destroy(gameObject,_explodeSound.length);
+        Instantiate(_explodeVFX, transform.position, transform.rotation, null);
     }
 
     private void OnDrawGizmos()

@@ -96,13 +96,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d40b13cf65abf3743b0e4e69a8178021, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _model: {fileID: 6256671343834356971}
   _timeToDetonate: 1
   _damage: 10
   _explodeVFX: {fileID: 2312591318274358132, guid: 77da29788f3010e4396994ea52057980,
     type: 3}
   _collider: {fileID: 4269360827381984194}
   _audioSource: {fileID: 3405206232528849953}
-  _enterSound: {fileID: 8300000, guid: b565c4f344a20b943ba6a2e9af9e662b, type: 3}
+  _startExplodeSound: {fileID: 8300000, guid: b565c4f344a20b943ba6a2e9af9e662b, type: 3}
+  _explodeSound: {fileID: 8300000, guid: ac0409d4ef511074d827ff677918f6ed, type: 3}
 --- !u!1 &6256671343834356971
 GameObject:
   m_ObjectHideFlags: 0

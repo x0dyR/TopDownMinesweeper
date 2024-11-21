@@ -1,14 +1,16 @@
 using UnityEngine;
 
-public class PathGoalPoint
+public class PathGoalPoint : MonoBehaviour
 {
     private PathGoalObject _visualObject;
 
     private Vector3 _lastPosition;
 
-    public PathGoalPoint(PathGoalObject visualObject)
+    public PathGoalObject PathGolaObject => _visualObject;
+
+    public void Initialize(PathGoalObject visualObject)
     {
-        _visualObject = Object.Instantiate(visualObject, Vector3.down, Quaternion.identity, null);
+        _visualObject = Instantiate(visualObject, Vector3.down, Quaternion.identity, null);
     }
 
     public void MoveTo(Vector3 position)
@@ -17,6 +19,6 @@ public class PathGoalPoint
             return;
 
         _lastPosition = position;
-        _visualObject.transform.position = position;
+        _visualObject.transform.position = _lastPosition;
     }
 }

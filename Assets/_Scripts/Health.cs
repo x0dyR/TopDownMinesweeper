@@ -1,6 +1,6 @@
 using System;
 
-public class Health : IDamageable
+public class Health
 {
     public event Action TookDamage;
 
@@ -18,6 +18,8 @@ public class Health : IDamageable
     public int MaxHealth => _maxHealth;
 
     public int CurrentHealth => _currentHealth;
+
+    public bool IsAlive => _currentHealth > 0;
 
     public void TakeDamage(int damage)
     {
