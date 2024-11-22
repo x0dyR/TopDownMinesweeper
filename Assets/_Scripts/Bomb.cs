@@ -1,4 +1,4 @@
-using System.Collections;
+п»їusing System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody), typeof(SphereCollider))]
@@ -20,7 +20,7 @@ public class Bomb : MonoBehaviour
 
     private Collider[] _overlapedColliders;
 
-    [field:SerializeField]private Coroutine _explodeCoroutine;
+    [field: SerializeField] private Coroutine _explodeCoroutine;
 
     private void Awake()
     {
@@ -41,7 +41,7 @@ public class Bomb : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         StopCoroutine(_explodeCoroutine);
-        _explodeCoroutine = null;//проверка юникода
+        _explodeCoroutine = null;
     }
 
     private IEnumerator ExplodeTimer(float timeToDetonate)
@@ -59,7 +59,7 @@ public class Bomb : MonoBehaviour
         _model.SetActive(false);
         _collider.enabled = false;
 
-        Destroy(gameObject,_explodeSound.length);
+        Destroy(gameObject, _explodeSound.length);
         Instantiate(_explodeVFX, transform.position, transform.rotation, null);
     }
 

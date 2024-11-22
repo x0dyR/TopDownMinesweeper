@@ -9,13 +9,13 @@ public class Health
     private int _maxHealth;
     private int _currentHealth;
 
-    public Health(int maxHealth, int currentHealth) //When a new Health instance is created current health value will be set as the initial current health.
-    {
+    public Health(int maxHealth, int currentHealth) //Помню, ты показывал пример с паттерном декоратор после применения максимальное хп становилось текущее                                                  
+    {                                               
         _maxHealth = maxHealth;
         _currentHealth = currentHealth;
     }
 
-    public int MaxHealth => _maxHealth;
+    public int MaxHealth => _maxHealth; //Почему нельзя было трогать макс. хп из класса?
 
     public int CurrentHealth => _currentHealth;
 
@@ -28,12 +28,12 @@ public class Health
 
         _currentHealth -= damage;
 
-        TookDamage?.Invoke();
-
         if (_currentHealth <= 0)
         {
             _currentHealth = 0;
             Died?.Invoke();
         }
+
+        TookDamage?.Invoke();
     }
 }

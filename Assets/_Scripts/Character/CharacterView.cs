@@ -25,6 +25,9 @@ public class CharacterView : MonoBehaviour
 
         _animator = GetComponent<Animator>();
 
+        _baseLayerIndex = _animator.GetLayerIndex(BaseLayerName);
+        _injuredLayerIndex = _animator.GetLayerIndex(InjuredLayerName);
+
         _character.Running += OnRunning;
         _character.Stopped += OnStopped;
         _character.Jumped += OnJumped;
@@ -32,14 +35,24 @@ public class CharacterView : MonoBehaviour
         _character.ReachedDafaultState += OnReachedDafaultState;
         _character.ReachedInjuredState += OnReachedLowHealth;
         _character.Died += OnDied;
-
-        _baseLayerIndex = _animator.GetLayerIndex(BaseLayerName);
-        _injuredLayerIndex = _animator.GetLayerIndex(InjuredLayerName);
     }
 
-    private void OnReachedDafaultState() => ChangeLayerToBase();
+    private void OnDisable()
+    {
+        _character.Running -= OnRunning;
+        _character.Stopped -= OnStopped;
+        _character.Jumped -= OnJumped;
+        _character.TookDamage -= OnTookDamage;
+        _character.ReachedDafaultState -= OnReachedDafaultState;
+        _character.ReachedInjuredState -= OnReachedLowHealth;
+        _character.Died -= OnDied;
+    }
 
-    private void OnReachedLowHealth() => ChangeLayerToInjured();
+    private void OnRunning(Vector3 position)
+    {
+        StopIdling();
+        StartRunning();
+    }
 
     private void OnStopped()
     {
@@ -55,26 +68,13 @@ public class CharacterView : MonoBehaviour
         StartCoroutine(JumpFor(duration));
     }
 
-    private void OnRunning(Vector3 position)
-    {
-        StopIdling();
-        StartRunning();
-    }
+    public void OnTookDamage() => _animator.SetTrigger(_takeDamageKey);
 
-    private void OnDisable()
-    {
-        _character.Running -= OnRunning;
-        _character.Stopped -= OnStopped;
-        _character.Jumped -= OnJumped;
-        _character.TookDamage -= OnTookDamage;
-        _character.ReachedDafaultState -= OnReachedDafaultState;
-        _character.ReachedInjuredState -= OnReachedLowHealth;
-        _character.Died -= OnDied;
-    }
+    private void OnReachedDafaultState() => ChangeLayerToBase();
+
+    private void OnReachedLowHealth() => ChangeLayerToInjured();
 
     public void OnDied() => _animator.SetTrigger(_deathKey);
-
-    public void OnTookDamage() => _animator.SetTrigger(_takeDamageKey);
 
     public void StartIdling() => _animator.SetBool(_isIdlingKey, true);
 

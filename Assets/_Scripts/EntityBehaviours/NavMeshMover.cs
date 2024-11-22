@@ -18,18 +18,12 @@ public class NavMeshMover : IMover
 
         if (position.magnitude > _navAgent.stoppingDistance)
         {
-            _navAgent.isStopped = false;
-
             if (IsPathExists(path, position))
             {
                 _navAgent.SetDestination(position);
 
                 GoalPosition = _navAgent.destination;
             }
-        }
-        else
-        {
-            _navAgent.isStopped = true;
         }
     }
 

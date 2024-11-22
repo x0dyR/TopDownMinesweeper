@@ -70,7 +70,7 @@ public class Character : MonoBehaviour, IDamageable
             if (_navAgent.velocity.magnitude < _navAgent.stoppingDistance)
                 Stopped?.Invoke();
             else
-                Running?.Invoke(_navAgent.destination);
+                Running?.Invoke(_inputDirection);
         }
 
         if (_health.IsAlive == false)
@@ -86,6 +86,8 @@ public class Character : MonoBehaviour, IDamageable
         _health.Died -= OnDied;
     }
 
+    public void TakeDamage(int damage) => _health.TakeDamage(damage);
+
     private void OnTookDamage()
     {
         _currentHealth = _health.CurrentHealth;
@@ -99,10 +101,10 @@ public class Character : MonoBehaviour, IDamageable
 
     private void OnDied() => Died?.Invoke();
 
-    public void TakeDamage(int damage) => _health.TakeDamage(damage);
-
     private IEnumerator Jump()
     {
+        _navAgent.isStopped = true;
+
         OffMeshLinkData data = _navAgent.currentOffMeshLinkData;
 
         Vector3 startPos = _navAgent.transform.position;
@@ -126,6 +128,7 @@ public class Character : MonoBehaviour, IDamageable
         }
 
         _navAgent.CompleteOffMeshLink();
+        _navAgent.isStopped = false;
         _jumpCoroutine = null;
     }
 }
