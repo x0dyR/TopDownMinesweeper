@@ -1,48 +1,52 @@
-﻿using System.Collections;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody), typeof(SphereCollider))]
 public class Bomb : MonoBehaviour
 {
-    [SerializeField] private GameObject _model;
+    public event Action Exploded;
+    public event Action StartedExplosion;
+    public event Action StopedExplosion;
 
-    [SerializeField] private float _timeToDetonate;
+    [SerializeField] private BombView _view;
+
+    [SerializeField] private float _timeToExplode;
     [SerializeField] private int _damage;
-
-    [SerializeField] private ParticleSystem _explodeVFX;
 
     [SerializeField] private SphereCollider _collider;
 
-    [SerializeField] private AudioSource _audioSource;
-
-    [SerializeField] private AudioClip _startExplodeSound;
-    [SerializeField] private AudioClip _explodeSound;
-
     private Collider[] _overlapedColliders;
 
-    [field: SerializeField] private Coroutine _explodeCoroutine;
+    private Coroutine _explodeCoroutine;
+
+    public float TimeToExplode => _timeToExplode;
 
     private void Awake()
     {
         _collider = GetComponent<SphereCollider>();
         _overlapedColliders = new Collider[32];
+        _view.Initialize(this);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out IDamageable _))
         {
-            _explodeCoroutine ??= StartCoroutine(ExplodeTimer(_timeToDetonate));
-
-            _audioSource.PlayOneShot(_startExplodeSound);
+            StartedExplosion?.Invoke();
+            _explodeCoroutine ??= StartCoroutine(ExplodeTimer(_timeToExplode));
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
+        StopedExplosion?.Invoke();
+
         StopCoroutine(_explodeCoroutine);
         _explodeCoroutine = null;
     }
+
 
     private IEnumerator ExplodeTimer(float timeToDetonate)
     {
@@ -54,13 +58,9 @@ public class Bomb : MonoBehaviour
             if (_overlapedColliders[i].TryGetComponent(out IDamageable damageable))
                 damageable.TakeDamage(_damage);
 
-        _audioSource.PlayOneShot(_explodeSound);
+        Exploded?.Invoke();
 
-        _model.SetActive(false);
         _collider.enabled = false;
-
-        Destroy(gameObject, _explodeSound.length);
-        Instantiate(_explodeVFX, transform.position, transform.rotation, null);
     }
 
     private void OnDrawGizmos()

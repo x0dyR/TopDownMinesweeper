@@ -19,11 +19,10 @@ public class AudioHandler
         _masterGroup = audioMixer;
     }
 
-    public void Initialize()
+    public void Initialize()//вызвать только в Start или после
     {
         int musicSaveValue = PlayerPrefs.GetInt(MusicKey);
-
-        Debug.Log(musicSaveValue);
+        int vfxSaveValue = PlayerPrefs.GetInt(VFXKey);
 
         if (musicSaveValue == 0 || musicSaveValue == 1)
         {
@@ -33,9 +32,6 @@ public class AudioHandler
         {
             _masterGroup.audioMixer.SetFloat(MusicKey, OffVolume);
         }
-
-        int vfxSaveValue = PlayerPrefs.GetInt(VFXKey);
-        Debug.Log(vfxSaveValue);
         
         if (vfxSaveValue == 0 || vfxSaveValue == 1)
         {

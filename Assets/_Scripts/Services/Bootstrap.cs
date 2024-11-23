@@ -34,8 +34,8 @@ public class Bootstrap : MonoBehaviour
 
     private AudioHandler _audioHandler;
 
-    [SerializeField]private bool _musicState;
-    [SerializeField]private bool _vfxState;
+    [SerializeField] private bool _musicState;
+    [SerializeField] private bool _vfxState;
 
     private void Awake()
     {
@@ -54,6 +54,8 @@ public class Bootstrap : MonoBehaviour
         _toggleMisucButton.onClick.AddListener(ToggleMusic);
         _toggleVFXButton.onClick.AddListener(ToggleVFX);
     }
+
+    private void Start() => _audioHandler.Initialize();
 
     private void OnDisable()
     {
@@ -74,7 +76,6 @@ public class Bootstrap : MonoBehaviour
         _raycaster = new Raycaster();
 
         _audioHandler = new(_masterGroup);
-        _audioHandler.Initialize();
     }
 
     private void CreateCharacterView(Character character)

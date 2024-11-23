@@ -107,6 +107,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _jumpSpeed: 7
 --- !u!65 &2960239079242629158
 BoxCollider:
   m_ObjectHideFlags: 0

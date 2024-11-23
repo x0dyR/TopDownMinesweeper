@@ -96,15 +96,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d40b13cf65abf3743b0e4e69a8178021, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _model: {fileID: 6256671343834356971}
-  _timeToDetonate: 1
+  _view: {fileID: 3387458951093483120}
+  _timeToExplode: 1
   _damage: 10
   _explodeVFX: {fileID: 2312591318274358132, guid: 77da29788f3010e4396994ea52057980,
     type: 3}
   _collider: {fileID: 4269360827381984194}
-  _audioSource: {fileID: 3405206232528849953}
-  _startExplodeSound: {fileID: 8300000, guid: b565c4f344a20b943ba6a2e9af9e662b, type: 3}
-  _explodeSound: {fileID: 8300000, guid: ac0409d4ef511074d827ff677918f6ed, type: 3}
 --- !u!1 &6256671343834356971
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,6 +113,7 @@ GameObject:
   - component: {fileID: 7119755810646936805}
   - component: {fileID: 8811991513699097534}
   - component: {fileID: 1203587288444838868}
+  - component: {fileID: 3387458951093483120}
   m_Layer: 0
   m_Name: powerupBomb
   m_TagString: Untagged
@@ -166,8 +164,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -1580535799172915004, guid: a7f7c5a516124d64f981168b20812902, type: 3}
-  - {fileID: -2867747967464863736, guid: a7f7c5a516124d64f981168b20812902, type: 3}
+  - {fileID: 2100000, guid: 35f4d9d3e9ecdcb41b605c63d0b57bc0, type: 2}
+  - {fileID: 2100000, guid: 021afd783d5c91f4eb7ad486668574d7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -189,6 +187,25 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3387458951093483120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6256671343834356971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c5aaf28c878b474184e555ae536ee59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _explodeVFX: {fileID: 2312591318274358132, guid: 77da29788f3010e4396994ea52057980,
+    type: 3}
+  _audioSource: {fileID: 3405206232528849953}
+  _explodeStartAudio: {fileID: 8300000, guid: b565c4f344a20b943ba6a2e9af9e662b, type: 3}
+  _explodeEndAudio: {fileID: 8300000, guid: ac0409d4ef511074d827ff677918f6ed, type: 3}
+  _minExplodeSize: 0
+  _maxExplodeSize: 1.5
 --- !u!1 &8152586009690502833
 GameObject:
   m_ObjectHideFlags: 0

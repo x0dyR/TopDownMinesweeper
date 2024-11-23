@@ -9,6 +9,7 @@ public class MovePositionMediator : MonoBehaviour
     {
         _character = character;
         _pathGoalVisualizer = pathGoalPoint;
+
         _character.Running += OnRunning;
         _character.Died += OnDied;
     }

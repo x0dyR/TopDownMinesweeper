@@ -25,6 +25,7 @@ public class Character : MonoBehaviour, IDamageable
     [SerializeField] private int _currentHealth;
 
     [SerializeField] private AnimationCurve _jumpCurve;
+    [SerializeField] private float _jumpSpeed;
 
     private Health _health;
 
@@ -110,7 +111,7 @@ public class Character : MonoBehaviour, IDamageable
         Vector3 startPos = _navAgent.transform.position;
         Vector3 endPos = data.endPos + Vector3.up * _navAgent.baseOffset;
 
-        float duration = (startPos - endPos).magnitude / _navAgent.speed;
+        float duration = (startPos - endPos).magnitude / _jumpSpeed; //чтоб не было как в Borderlands))
 
         Jumped?.Invoke(duration);
 
