@@ -83,30 +83,6 @@ public class CharacterView : MonoBehaviour
         StartCoroutine(JumpFor(duration));
     }
 
-    public void OnTookDamage() => _animator.SetTrigger(_takeDamageKey);
-
-    private void OnReachedDafaultState() => ChangeLayerToBase();
-
-    private void OnReachedLowHealth() => ChangeLayerToInjured();
-
-    public void OnDied() => _animator.SetTrigger(_deathKey);
-
-    public void StartIdling() => _animator.SetBool(_isIdlingKey, true);
-
-    public void StopIdling() => _animator.SetBool(_isIdlingKey, false);
-
-    public void StartRunning() => _animator.SetBool(_isRunningKey, true);
-
-    public void StopRunning() => _animator.SetBool(_isRunningKey, false);
-
-    public void StartJumping() => _animator.SetBool(_isJumpingKey, true);
-
-    public void StopJumping() => _animator.SetBool(_isJumpingKey, false);
-
-    public void ChangeLayerToBase() => _animator.SetLayerWeight(_baseLayerIndex, 1.0f);
-
-    public void ChangeLayerToInjured() => _animator.SetLayerWeight(_injuredLayerIndex, 1.0f);
-
     public void StartDisapear()
     {
         StartCoroutine(Disapear(_materials));
@@ -115,6 +91,30 @@ public class CharacterView : MonoBehaviour
     {
         StartCoroutine(TakeDamage(_materials));
     }
+
+    private void OnTookDamage() => _animator.SetTrigger(_takeDamageKey);
+
+    private void OnReachedDafaultState() => ChangeLayerToBase();
+
+    private void OnReachedLowHealth() => ChangeLayerToInjured();
+
+    private void OnDied() => _animator.SetTrigger(_deathKey);
+
+    private void StartIdling() => _animator.SetBool(_isIdlingKey, true);
+
+    private void StopIdling() => _animator.SetBool(_isIdlingKey, false);
+
+    private void StartRunning() => _animator.SetBool(_isRunningKey, true);
+
+    private void StopRunning() => _animator.SetBool(_isRunningKey, false);
+
+    private void StartJumping() => _animator.SetBool(_isJumpingKey, true);
+
+    private void StopJumping() => _animator.SetBool(_isJumpingKey, false);
+
+    private void ChangeLayerToBase() => _animator.SetLayerWeight(_baseLayerIndex, 1.0f);
+
+    private void ChangeLayerToInjured() => _animator.SetLayerWeight(_injuredLayerIndex, 1.0f);
 
     private IEnumerator JumpFor(float duration)
     {
