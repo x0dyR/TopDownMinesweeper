@@ -138,6 +138,7 @@ public class CharacterView : MonoBehaviour
 
             yield return null;
         }
+        Destroy(_character.gameObject);
     }
 
     private IEnumerator TakeDamage(IEnumerable<Material> materials)
